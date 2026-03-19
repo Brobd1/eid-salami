@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ঈদের সালামি 🎁</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+background: radial-gradient(circle, #0a0a15, #000);
+font-family:'Hind Siliguri',sans-serif;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+color:gold;
+overflow:hidden;
+}
+
+/* Box */
+.box{
+width:250px;
+height:250px;
+background:rgba(255,255,255,0.05);
+border:2px solid gold;
+border-radius:20px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+backdrop-filter:blur(15px);
+box-shadow:0 0 30px rgba(255,215,0,0.3);
+cursor:pointer;
+transition:0.4s;
+}
+
+.box:hover{
+transform:scale(1.05);
+box-shadow:0 0 50px gold;
+}
+
+/* Gift icon */
+.gift{
+font-size:60px;
+animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+50%{transform:scale(1.2);}
+}
+
+/* Result */
+.result{
+display:none;
+text-align:center;
+animation:fade 1s;
+}
+
+@keyframes fade{
+from{opacity:0; transform:scale(0.8);}
+to{opacity:1; transform:scale(1);}
+}
+
+/* Button */
+.btn{
+margin-top:15px;
+padding:10px 20px;
+border:none;
+border-radius:30px;
+background:gold;
+color:black;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 0 15px gold;
+}
+
+/* Confetti */
+canvas{
+position:absolute;
+top:0;
+left:0;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="box" id="giftBox" onclick="openBox()">
+    <div class="gift">🎁</div>
+    <h3>ঈদের সালামি</h3>
+    <p>খুলতে টাচ করো</p>
+</div>
+
+<div class="result" id="resultBox">
+    <h2>🎉 তুমি পেয়েছো 🎉</h2>
+    <h1 id="money">৳ 0</h1>
+    <button class="btn" onclick="reset()">আবার চেষ্টা করো</button>
+</div>
+
+<script>
+
+/* Random money */
+function openBox(){
+let amount = Math.floor(Math.random() * (1000 - 10 + 1)) + 10;
+
+document.getElementById("giftBox").style.display="none";
+document.getElementById("resultBox").style.display="block";
+
+animateMoney(amount);
+startConfetti();
+}
+
+/* Animate number */
+function animateMoney(target){
+let current = 0;
+let el = document.getElementById("money");
+
+let interval = setInterval(()=>{
+current += Math.ceil(target/20);
+if(current >= target){
+current = target;
+clearInterval(interval);
+}
+el.innerText = "৳ " + current;
+},50);
+}
+
+/* Reset */
+function reset(){
+location.reload();
+}
+
+/* Confetti */
+const canvas=document.getElementById("confetti");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let conf=[];
+
+function startConfetti(){
+for(let i=0;i<150;i++){
+conf.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+dy:Math.random()*3+2
+});
+}
+setInterval(draw,30);
+}
+
+function draw(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+conf.forEach(c=>{
+c.y+=c.dy;
+if(c.y>canvas.height) c.y=0;
+
+ctx.fillStyle="gold";
+ctx.fillRect(c.x,c.y,3,3);
+});
+}
+
+</script>
+
+</body>
+  </html>
